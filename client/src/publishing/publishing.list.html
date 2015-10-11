@@ -1,0 +1,48 @@
+<h1>Publishings</h1>
+
+<button class="btn btn-success pull-right" ng-click="vm.create()"><span class="fa fa-plus"></span> Add</button>
+
+<table class="table table-fixed">
+    <thead>
+        <th class="col-xs-2">Network</th>
+        <th class="col-xs-5">Message</th>
+        <th class="col-xs-3">Scheduled</th>
+        <th class="col-xs-2"></th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="publishing in vm.publishings | orderBy:'-scheduled'">
+            <td>
+                {{publishing.content.network}}
+            </td>
+            <td>
+                <span class="ellipsis">{{publishing.content.message}}</span>
+            </td>
+            <td>
+                {{publishing.scheduled | date:'medium'}}
+            </td>
+            <td class="text-right">
+                <a href="#/publishing/{{publishing.id}}" class="btn btn-default"><span class="fa fa-edit"></span></a>
+                <button data-toggle="modal" data-target="#confirmDeleteModal" class="btn btn-danger" ng-click="vm.deletingItem = publishing"><span class="fa fa-trash"></span></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalTitle">Confirm Delete</h4>
+            </div>
+            <div class="modal-body">
+                Are you quite sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="vm.remove(vm.deletingItem)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

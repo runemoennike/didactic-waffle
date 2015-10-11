@@ -1,0 +1,151 @@
+<h1>Publishing
+    <small>for {{vm.publishing.content.network}} on {{vm.publishing.scheduled | date:'mediumDate'}}</small>
+</h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">Content</h2>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <!-- Message -->
+            <div class="form-group">
+                <label for="inputMessage" class="col-sm-2 control-label">Message</label>
+
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="inputMessage"
+                              ng-model="vm.publishing.content.message" ng-change="vm.dataChanged()"></textarea>
+                </div>
+            </div>
+
+            <!-- Network -->
+            <div class="form-group">
+                <label for="inputNetwork" class="col-sm-2 control-label">Network</label>
+
+                <div class="col-sm-10">
+                    <select class="form-control" id="inputNetwork" ng-model="vm.publishing.content.network"
+                            ng-change="vm.dataChanged()">
+                        <option value="facebook">Facebook</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="linkedin">LinkedIn</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Media -->
+            <div class="form-group">
+                <label for="inputMediaUrl" class="col-sm-2 control-label">Media URL</label>
+
+                <div class="col-sm-10">
+                    <input type="url" class="form-control" id="inputMediaUrl"
+                           ng-model="vm.publishing.content.media.url" ng-change="vm.dataChanged()">
+
+                    <img ng-src="{{vm.publishing.content.media.url}}" class="media-preview"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">Metadata</h2>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <!-- Scheduled -->
+            <div class="form-group">
+                <label for="inputScheduled" class="col-sm-2 control-label">Scheduled</label>
+
+                <div class="col-sm-10">
+                    <input type="datetime" date-time class="form-control" id="inputScheduled"
+                           ng-model="vm.publishing.scheduled">
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="inputStatus" class="col-sm-2 control-label">Status</label>
+
+                <div class="col-sm-10">
+                    <select class="form-control" id="inputStatus" ng-model="vm.publishing.status"
+                            ng-change="vm.dataChanged()">
+                        <option value="draft">Draft</option>
+                        <option value="ready">Ready</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="form-group">
+                <label for="inputTags" class="col-sm-2 control-label">Tags</label>
+
+                <div class="col-sm-10">
+                    <tags-input id="inputTags" ng-model="vm.publishing.tags" on-tag-added="vm.dataChanged()"
+                                on-tag-removed="vm.dataChanged()"></tags-input>
+                </div>
+            </div>
+
+            <!-- Channels -->
+            <div class="form-group">
+                <label for="inputChannels" class="col-sm-2 control-label">Channels</label>
+
+                <div class="col-sm-10">
+                    <tags-input id="inputChannels" ng-model="vm.publishing.channels" display-property="name"
+                                on-tag-added="vm.dataChanged()" on-tag-removed="vm.dataChanged()"></tags-input>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">Geo-targeting</h2>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+
+            <!-- Countries -->
+            <div class="form-group">
+                <label for="inputCountries" class="col-sm-2 control-label">Countries</label>
+
+                <div class="col-sm-10">
+                    <tags-input id="inputCountries" ng-model="vm.publishing.geo.countries" display-property="value"
+                                on-tag-added="vm.dataChanged()" on-tag-removed="vm.dataChanged()"></tags-input>
+                </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="form-group">
+                <label for="inputLanguages" class="col-sm-2 control-label">Languages</label>
+
+                <div class="col-sm-10">
+                    <tags-input id="inputLanguages" ng-model="vm.publishing.geo.languages" display-property="value"
+                                on-tag-added="vm.dataChanged()" on-tag-removed="vm.dataChanged()"></tags-input>
+                </div>
+            </div>
+
+            <!-- Cities -->
+            <div class="form-group">
+                <label for="inputLanguages" class="col-sm-2 control-label">Cities</label>
+
+                <div class="col-sm-10">
+                    <tags-input id="inputCities" ng-model="vm.publishing.geo.inputCities" display-property="value"
+                                on-tag-added="vm.dataChanged()" on-tag-removed="vm.dataChanged()"></tags-input>
+                </div>
+            </div>
+
+            <!-- Regions -->
+            <div class="form-group">
+                <label for="inputRegions" class="col-sm-2 control-label">Regions</label>
+
+                <div class="col-sm-10">
+                    <tags-input id="inputRegions" ng-model="vm.publishing.geo.inputRegions" display-property="value"
+                                on-tag-added="vm.dataChanged()" on-tag-removed="vm.dataChanged()"></tags-input>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -14,5 +14,13 @@
                 controller: 'PublishingListController',
                 controllerAs: 'vm'
             });
+
+        $routeProvider
+            .when('/publishing/:id', {
+                templateUrl: 'src/publishing/publishing.edit.html',
+                controller: 'PublishingEditController',
+                controllerAs: 'vm'
+            });
+
     }
 })();

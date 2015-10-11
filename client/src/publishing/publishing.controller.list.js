@@ -4,11 +4,18 @@
         .controller('PublishingListController', controller);
 
     controller.$inject = [
+        '$scope',
+        '$location',
+        'publishingData'
     ];
 
-    function controller() {
+    function controller($scope, $location, publishingData) {
 
         var vm = {};
+
+        vm.publishings = void 0;
+        vm.create = create;
+        vm.remove = remove;
 
         activate();
 
@@ -17,7 +24,32 @@
         //////////////////////////////////////
 
         function activate() {
+            getPublishings();
+        }
 
+        function getPublishings() {
+            publishingData.list()
+                .then(function(data) {
+                   vm.publishings = data;
+                });
+        }
+
+        function create() {
+            publishingData.create()
+                .then(function(data) {
+                    $location.path('publishing/' + data.id);
+                });
+        }
+
+        function remove(item) {
+            publishingData.remove(item)
+                .then(function(data) {
+                    var idx = _(vm.publishings).indexOf(item);
+
+                    if(idx !== -1) {
+                        vm.publishings.splice(idx, 1);
+                    }
+                });
         }
 
     }
