@@ -1,0 +1,49 @@
+{
+  "name": "fs_assignment",
+  "version": "1.0.0",
+  "description": "NodeJS, AngularJS, websockets demo.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/runemoennike/didactic-waffle.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "AngularJS",
+    "D3.js",
+    "websockets"
+  ],
+  "author": "RAJM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/runemoennike/didactic-waffle/issues"
+  },
+  "homepage": "https://github.com/runemoennike/didactic-waffle#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-copy": "^0.8.1",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mkdir": "^0.1.2"
+  },
+  "dependencies": {
+    "angular": "^1.4.7",
+    "angular-route": "^1.4.7",
+    "body-parser": "^1.14.1",
+    "bootstrap": "^3.3.5",
+    "d3": "^3.5.6",
+    "debug": "^2.2.0",
+    "express": "^4.13.3",
+    "http": "0.0.0",
+    "jquery": "^2.1.4",
+    "morgan": "^1.6.1",
+    "node-uuid": "^1.4.3",
+    "path": "^0.12.7",
+    "underscore": "^1.8.3"
+  }
+}
