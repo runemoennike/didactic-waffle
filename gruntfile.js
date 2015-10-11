@@ -34,6 +34,8 @@ module.exports = function (grunt) {
                     'node_modules/angular/angular.min.js',
                     'node_modules/angular-route/angular-route.min.js',
                     'node_modules/angular-datepicker/dist/index.min.js',
+                    'node_modules/angular-socket-io/socket.min.js',
+                    'node_modules/socket.io-client/socket.io.js',
                     'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/ng-tags-input/build/ng-tags-input.min.js',
                     'node_modules/underscore/underscore-min.js',
