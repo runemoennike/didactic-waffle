@@ -5,6 +5,7 @@ angular.module('app',
         'datePicker',
         'ngTagsInput',
 
+        'socket',
         'navigation',
         'home',
         'publishing',

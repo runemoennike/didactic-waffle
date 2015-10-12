@@ -25,6 +25,13 @@
 
         function activate() {
             getPublishings();
+
+            publishingData.onListChanged(messageReceivedListChanged);
+            publishingData.subscribe();
+
+            $scope.$on("$destroy", function() {
+                publishingData.unsubscribe();
+            });
         }
 
         function getPublishings() {
@@ -50,6 +57,11 @@
                         vm.publishings.splice(idx, 1);
                     }
                 });
+        }
+
+        function messageReceivedListChanged(list) {
+            vm.publishings = list;
+            $scope.$apply();
         }
 
     }

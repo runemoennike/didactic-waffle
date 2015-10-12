@@ -26,6 +26,12 @@
         function activate() {
             getPublishing();
 
+            publishingData.onItemChanged(messageReceivedItemChanged);
+            publishingData.subscribe();
+
+            $scope.$on("$destroy", function() {
+                publishingData.unsubscribe();
+            });
         }
 
         function getPublishing() {
@@ -42,5 +48,9 @@
             publishingData.update(vm.publishing);
         }
 
+        function messageReceivedItemChanged(item) {
+            vm.publishing = item;
+            $scope.$apply();
+        }
     }
 })();

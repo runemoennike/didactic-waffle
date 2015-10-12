@@ -5,6 +5,7 @@ angular.module('app',
         'datePicker',
         'ngTagsInput',
 
+        'socket',
         'navigation',
         'home',
         'publishing',
@@ -20,6 +21,9 @@ angular.module('navigation',
 angular.module('publishing',
     [
         'ngRoute'
+    ]);
+angular.module('socket',
+    [
     ]);
 (function() {
     angular
@@ -129,6 +133,12 @@ angular.module('publishing',
         function activate() {
             getPublishing();
 
+            publishingData.onItemChanged(messageReceivedItemChanged);
+            publishingData.subscribe();
+
+            $scope.$on("$destroy", function() {
+                publishingData.unsubscribe();
+            });
         }
 
         function getPublishing() {
@@ -145,6 +155,10 @@ angular.module('publishing',
             publishingData.update(vm.publishing);
         }
 
+        function messageReceivedItemChanged(item) {
+            vm.publishing = item;
+            $scope.$apply();
+        }
     }
 })();
 (function() {
@@ -174,6 +188,13 @@ angular.module('publishing',
 
         function activate() {
             getPublishings();
+
+            publishingData.onListChanged(messageReceivedListChanged);
+            publishingData.subscribe();
+
+            $scope.$on("$destroy", function() {
+                publishingData.unsubscribe();
+            });
         }
 
         function getPublishings() {
@@ -201,22 +222,38 @@ angular.module('publishing',
                 });
         }
 
+        function messageReceivedListChanged(list) {
+            vm.publishings = list;
+            $scope.$apply();
+        }
+
     }
 })();
-(function() {
+(function () {
     angular
         .module('publishing')
         .factory('publishingData', dataservice);
 
-    dataservice.$inject = ['$http'];
+    dataservice.$inject = [
+        '$http',
+        'socket'
+    ];
 
-    function dataservice($http, logger) {
+    function dataservice($http, socket) {
+        var listContainer = [];
+        var onListChangedFn;
+        var onItemChangedFn;
+
         return {
             list: list,
             create: create,
             read: read,
             update: update,
-            remove: remove
+            remove: remove,
+            onListChanged: onListChanged,
+            onItemChanged: onItemChanged,
+            subscribe: subscribe,
+            unsubscribe: unsubscribe
         };
 
         function list() {
@@ -224,7 +261,8 @@ angular.module('publishing',
                 .then(complete);
 
             function complete(response) {
-                return response.data;
+                listContainer = response.data;
+                return listContainer;
             }
         }
 
@@ -271,6 +309,61 @@ angular.module('publishing',
                 return response.data;
             }
         }
+
+        function onListChanged(fn) {
+            onListChangedFn = fn;
+        }
+
+        function onItemChanged(fn) {
+            onItemChangedFn = fn;
+        }
+
+        function subscribe() {
+            socket.on('create publishing', function (item) {
+                listContainer.push(item);
+
+                if (typeof(onListChangedFn) !== 'undefined') {
+                    onListChangedFn(listContainer);
+                }
+            });
+
+            socket.on('update publishing', function (item) {
+                var idx = _(listContainer).findIndex(function (el) {
+                    return el.id == item.id;
+                });
+
+                if(idx !== -1) {
+                    listContainer[idx] = item;
+                }
+
+                if (typeof(onListChangedFn) !== 'undefined') {
+                    onListChangedFn(listContainer);
+                }
+                if (typeof(onItemChangedFn) !== 'undefined') {
+                    onItemChangedFn(item);
+                }
+            });
+
+            socket.on('delete publishing', function (item) {
+                var idx = _(listContainer).findIndex(function (el) {
+                    return el.id == item.id;
+                });
+
+                if(idx !== -1) {
+                    listContainer.splice(idx, 1);
+                }
+
+                if (typeof(onListChangedFn) !== 'undefined') {
+                    onListChangedFn(listContainer);
+                }
+            });
+        }
+
+        function unsubscribe() {
+            socket.removeAllListeners("create publishing");
+            socket.removeAllListeners("update publishing");
+            socket.removeAllListeners("delete publishing");
+        }
     }
 })();
 (function() {
@@ -299,3 +392,48 @@ angular.module('publishing',
 
     }
 })();
+(function () {
+    angular
+        .module('socket')
+        .run(run);
+
+    run.$inject = [
+        'socket'
+    ];
+
+    function run(socket) {
+        socket.connect();
+    }
+})();
+(function (io) {
+    angular
+        .module('socket')
+        .factory('socket', service);
+
+    service.$inject = [
+
+    ];
+
+    function service() {
+        var socket;
+
+        return {
+            connect: connect,
+            on: on,
+            removeAllListeners: removeAllListeners
+        }
+
+        function on(event, fn) {
+            return socket.on(event, fn);
+        }
+
+        function removeAllListeners(event) {
+            return socket.removeAllListeners(event);
+        }
+
+        function connect() {
+            socket = io.connect();
+            return socket;
+        }
+    }
+})(io);
