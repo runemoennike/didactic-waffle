@@ -133,12 +133,21 @@ angular.module('socket',
         function activate() {
             getPublishing();
 
+            // Get noticed when the item changes on the service.
             publishingData.onItemChanged(messageReceivedItemChanged);
             publishingData.subscribe();
 
+            // Clean up.
             $scope.$on("$destroy", function() {
                 publishingData.unsubscribe();
             });
+
+            // The datepicker does not correctly trigger ng-change.
+            $scope.$watch('vm.publishing.scheduled', function(newVal, oldVal) {
+                if(newVal !== oldVal) {
+                    dataChanged();
+                }
+            })
         }
 
         function getPublishing() {
