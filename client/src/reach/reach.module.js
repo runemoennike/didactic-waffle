@@ -1,4 +1,4 @@
-angular.module('publishing',
+angular.module('reach',
     [
         'ngRoute',
         'socket'

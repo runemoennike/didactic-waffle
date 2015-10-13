@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
 var uuid = require('node-uuid');
-var socket = require('../socket')
+var socket = require('../socket');
 
 // The data.
 var data = require('../data/publishing.json');
@@ -67,6 +67,5 @@ router.delete('/:id', function (req, res, next) {
     }
 
 });
-
 
 module.exports = router;

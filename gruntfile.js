@@ -39,6 +39,7 @@ module.exports = function (grunt) {
                     'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/ng-tags-input/build/ng-tags-input.min.js',
                     'node_modules/underscore/underscore-min.js',
+                    'node_modules/d3/d3.min.js',
                 ],
                 dest: 'client/dist/js'
             },
@@ -52,7 +53,7 @@ module.exports = function (grunt) {
             }
         },
         rename: {
-          // The developer of angular-datepicker chose to name his dist files index.js/index.css...
+            // The developer of angular-datepicker chose to name his dist files index.js/index.css...
             angulardatepicker: {
                 files: [
                     {src: 'client/dist/js/index.min.js', dest: 'client/dist/js/angular-datepicker.min.js'},

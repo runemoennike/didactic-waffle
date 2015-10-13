@@ -40,7 +40,15 @@
                     message: 'Unnamed Publishing',
                     network: 'facebook'
                 },
-                scheduled: (new Date()).toISOString()
+                scheduled: (new Date()).toISOString(),
+                tags: [],
+                channels: [],
+                geo: {
+                    countries: [],
+                    languages: [],
+                    cities: [],
+                    regions: []
+                }
             };
 
             return $http.post('/service/publishing', item)

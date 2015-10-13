@@ -49,7 +49,13 @@
         }
 
         function uiDataChanged() {
-            publishingData.update(vm.publishing);
+            vm.saved = false;
+
+            publishingData
+                .update(vm.publishing)
+                .then(function() {
+                    vm.saved = true;
+                });
         }
 
         function messageReceivedItemChanged(item) {

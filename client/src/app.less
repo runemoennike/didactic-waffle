@@ -20,3 +20,67 @@
   max-width: 100%;
   max-height: 50vh;
 }
+
+reach-graph {
+  display: block;
+  width: 100%;
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .line {
+    fill: none;
+    stroke-width: 1.5px;
+  }
+
+  .line-total-impressions {
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
+
+  .line-organic-impressions {
+    stroke: red;
+    stroke-dasharray: 3, 3;
+  }
+
+  .line-viral-impressions {
+    stroke: green;
+    stroke-dasharray: 3, 3;
+  }
+
+  .line-paid-impressions {
+    stroke: orange;
+    stroke-dasharray: 3, 3;
+  }
+}
+
+ul.legend {
+  list-style: none;
+  font-weight: bolder;
+  text-align: center;
+
+  li {
+    display: inline;
+    padding: 0 6px;
+  }
+}
+
+.legend-total-impressions {
+  color: steelblue;
+}
+
+.legend-organic-impressions {
+  color: red;
+}
+
+.legend-viral-impressions {
+  color: green;
+}
+
+.legend-paid-impressions {
+  color: orange;
+}

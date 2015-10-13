@@ -9,4 +9,5 @@ angular.module('app',
         'navigation',
         'home',
         'publishing',
+        'reach',
     ]);

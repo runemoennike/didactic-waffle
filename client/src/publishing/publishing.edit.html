@@ -132,7 +132,7 @@
                 <label for="inputLanguages" class="col-sm-2 control-label">Cities</label>
 
                 <div class="col-sm-10">
-                    <tags-input id="inputCities" ng-model="vm.publishing.geo.inputCities" display-property="value"
+                    <tags-input id="inputCities" ng-model="vm.publishing.geo.cities" display-property="value"
                                 on-tag-added="vm.uiDataChanged()" on-tag-removed="vm.uiDataChanged()"></tags-input>
                 </div>
             </div>
@@ -142,10 +142,15 @@
                 <label for="inputRegions" class="col-sm-2 control-label">Regions</label>
 
                 <div class="col-sm-10">
-                    <tags-input id="inputRegions" ng-model="vm.publishing.geo.inputRegions" display-property="value"
+                    <tags-input id="inputRegions" ng-model="vm.publishing.geo.regions" display-property="value"
                                 on-tag-added="vm.uiDataChanged()" on-tag-removed="vm.uiDataChanged()"></tags-input>
                 </div>
             </div>
         </form>
     </div>
+</div>
+
+<div class="text-center">
+    <span ng-show="vm.saved"><span class="fa fa-check fa-lg"></span> Saved.</span>
+    <span ng-show="!vm.saved">Saving...</span>
 </div>
