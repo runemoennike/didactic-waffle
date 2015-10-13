@@ -122,7 +122,7 @@ angular.module('socket',
         var dataLoaded = false;
 
         vm.publishing = void 0;
-        vm.dataChanged = dataChanged;
+        vm.uiDataChanged = uiDataChanged;
 
         activate();
 
@@ -135,17 +135,12 @@ angular.module('socket',
 
             // Get noticed when the item changes on the service.
             publishingData.onItemChanged(messageReceivedItemChanged);
-            publishingData.subscribe();
-
-            // Clean up.
-            $scope.$on("$destroy", function() {
-                publishingData.unsubscribe();
-            });
+            publishingData.subscribe($scope);
 
             // The datepicker does not correctly trigger ng-change.
             $scope.$watch('vm.publishing.scheduled', function(newVal, oldVal) {
                 if(newVal !== oldVal) {
-                    dataChanged();
+                    uiDataChanged();
                 }
             })
         }
@@ -160,13 +155,15 @@ angular.module('socket',
                 });
         }
 
-        function dataChanged() {
+        function uiDataChanged() {
             publishingData.update(vm.publishing);
         }
 
         function messageReceivedItemChanged(item) {
-            vm.publishing = item;
-            $scope.$apply();
+            if(item.id === vm.publishing.id) {
+                vm.publishing = item;
+                $scope.$apply();
+            }
         }
     }
 })();
@@ -198,12 +195,10 @@ angular.module('socket',
         function activate() {
             getPublishings();
 
+            // Get noticed when the list changes on the service.
             publishingData.onListChanged(messageReceivedListChanged);
-            publishingData.subscribe();
+            publishingData.subscribe($scope);
 
-            $scope.$on("$destroy", function() {
-                publishingData.unsubscribe();
-            });
         }
 
         function getPublishings() {
@@ -262,7 +257,6 @@ angular.module('socket',
             onListChanged: onListChanged,
             onItemChanged: onItemChanged,
             subscribe: subscribe,
-            unsubscribe: unsubscribe
         };
 
         function list() {
@@ -319,15 +313,25 @@ angular.module('socket',
             }
         }
 
+        /**
+         * @param fn Function to call when the list of items has changed.
+         */
         function onListChanged(fn) {
             onListChangedFn = fn;
         }
 
+        /**
+         * @param fn Function to call when a single item has changed.
+         */
         function onItemChanged(fn) {
             onItemChangedFn = fn;
         }
 
-        function subscribe() {
+        /**
+         * Subscribe to item changes via Socket.IO.
+         * @param [$scope] Supply to automatically unsubscribe on $scope disposal.
+         */
+        function subscribe($scope) {
             socket.on('create publishing', function (item) {
                 listContainer.push(item);
 
@@ -366,6 +370,13 @@ angular.module('socket',
                     onListChangedFn(listContainer);
                 }
             });
+
+            // Clean up.
+            if(typeof($scope) !== 'undefined') {
+                $scope.$on("$destroy", function () {
+                    unsubscribe();
+                });
+            }
         }
 
         function unsubscribe() {

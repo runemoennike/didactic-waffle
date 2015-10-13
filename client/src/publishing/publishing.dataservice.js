@@ -22,7 +22,6 @@
             onListChanged: onListChanged,
             onItemChanged: onItemChanged,
             subscribe: subscribe,
-            unsubscribe: unsubscribe
         };
 
         function list() {
@@ -79,15 +78,25 @@
             }
         }
 
+        /**
+         * @param fn Function to call when the list of items has changed.
+         */
         function onListChanged(fn) {
             onListChangedFn = fn;
         }
 
+        /**
+         * @param fn Function to call when a single item has changed.
+         */
         function onItemChanged(fn) {
             onItemChangedFn = fn;
         }
 
-        function subscribe() {
+        /**
+         * Subscribe to item changes via Socket.IO.
+         * @param [$scope] Supply to automatically unsubscribe on $scope disposal.
+         */
+        function subscribe($scope) {
             socket.on('create publishing', function (item) {
                 listContainer.push(item);
 
@@ -126,6 +135,13 @@
                     onListChangedFn(listContainer);
                 }
             });
+
+            // Clean up.
+            if(typeof($scope) !== 'undefined') {
+                $scope.$on("$destroy", function () {
+                    unsubscribe();
+                });
+            }
         }
 
         function unsubscribe() {

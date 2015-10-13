@@ -26,12 +26,10 @@
         function activate() {
             getPublishings();
 
+            // Get noticed when the list changes on the service.
             publishingData.onListChanged(messageReceivedListChanged);
-            publishingData.subscribe();
+            publishingData.subscribe($scope);
 
-            $scope.$on("$destroy", function() {
-                publishingData.unsubscribe();
-            });
         }
 
         function getPublishings() {

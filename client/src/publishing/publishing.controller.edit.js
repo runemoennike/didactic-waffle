@@ -15,7 +15,7 @@
         var dataLoaded = false;
 
         vm.publishing = void 0;
-        vm.dataChanged = dataChanged;
+        vm.uiDataChanged = uiDataChanged;
 
         activate();
 
@@ -28,17 +28,12 @@
 
             // Get noticed when the item changes on the service.
             publishingData.onItemChanged(messageReceivedItemChanged);
-            publishingData.subscribe();
-
-            // Clean up.
-            $scope.$on("$destroy", function() {
-                publishingData.unsubscribe();
-            });
+            publishingData.subscribe($scope);
 
             // The datepicker does not correctly trigger ng-change.
             $scope.$watch('vm.publishing.scheduled', function(newVal, oldVal) {
                 if(newVal !== oldVal) {
-                    dataChanged();
+                    uiDataChanged();
                 }
             })
         }
@@ -53,13 +48,15 @@
                 });
         }
 
-        function dataChanged() {
+        function uiDataChanged() {
             publishingData.update(vm.publishing);
         }
 
         function messageReceivedItemChanged(item) {
-            vm.publishing = item;
-            $scope.$apply();
+            if(item.id === vm.publishing.id) {
+                vm.publishing = item;
+                $scope.$apply();
+            }
         }
     }
 })();
